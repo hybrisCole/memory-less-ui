@@ -22,10 +22,10 @@ const mapDispatchToProps = dispatch => ({
 class GameConfig extends Component {
   startGame = () => {
     if (validator.isEmpty(this.props.config.name)) {
-      alert('Enter a name');
+      alert("Enter a name");
     } else {
       this.props.actions.startGame(this.props.config.size);
-      this.props.history.push('/play');
+      this.props.history.push("/play");
     }
   };
   render() {
@@ -56,19 +56,25 @@ class GameConfig extends Component {
             onClick={() => {
               this.props.actions.setGridSize(4);
             }}
-          >4x4</Button>
+          >
+            4x4
+          </Button>
           <Button
             primary={this.props.config.size === 6}
             onClick={() => {
               this.props.actions.setGridSize(6);
             }}
-          >6x6</Button>
+          >
+            6x6
+          </Button>
           <Button
             primary={this.props.config.size === 8}
             onClick={() => {
               this.props.actions.setGridSize(8);
             }}
-          >8x8</Button>
+          >
+            8x8
+          </Button>
         </Button.Group>
         <Divider />
         <Header as="h2">Time</Header>

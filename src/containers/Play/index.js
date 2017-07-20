@@ -1,31 +1,55 @@
 import React, { Component } from "react";
-import _ from 'lodash';
+import _ from "lodash";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { Container, Grid, Header, Divider } from "semantic-ui-react";
+import {
+  Button,
+  Container,
+  Grid,
+  Header,
+  Divider,
+  Progress
+} from "semantic-ui-react";
+import { selectNumber } from "../../actions/play";
 const mapStateToProps = state => state;
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(
     {
-
+      selectNumber
     },
     dispatch
   )
 });
 
-const generateGridColumn = (number) => <Grid.Column key={Math.random()}>{number}</Grid.Column>;
-const generateGridRow = (row) => <Grid.Row key={Math.random()}>{_.map(row, (number) => generateGridColumn(number))}</Grid.Row>;
-
-const generateUIGrid = (grid) => {
-  const rows = [];
-  _.each(grid, (row) => {
-    rows.push(generateGridRow(row));
-  })
-  return <Grid columns='equal' celled='internally'>{rows}</Grid>;
-};
-
 class Play extends Component {
+  generateGridColumn = numberData =>
+    <Grid.Column key={numberData.id} style={{ padding: 2 }}>
+      <Button
+        fluid
+        basic={!numberData.found}
+        color="blue"
+        onClick={() => {
+          this.props.actions.selectNumber(numberData.id);
+        }}
+        style={{ height: 60, fontSize: 18 }}
+      >
+        {numberData.selected || numberData.found ? numberData.number : "?"}
+      </Button>
+    </Grid.Column>;
+
+  generateGridRow = row =>
+    <Grid.Row key={Math.random()} style={{ margin: 0, padding: 0 }}>
+      {_.map(row, number => this.generateGridColumn(number))}
+    </Grid.Row>;
+
+  generateUIGrid = () => {
+    const rows = [];
+    _.each(this.props.play.grid, row => {
+      rows.push(this.generateGridRow(row));
+    });
+    return <Grid columns="equal">{rows}</Grid>;
+  };
   render() {
     return (
       <Container text>
@@ -33,7 +57,18 @@ class Play extends Component {
           Memory Less
         </Header>
         <Divider />
-        {generateUIGrid(this.props.play.grid)}
+        <Header as="h2" textAlign="center" style={{ paddingTop: 15 }}>
+          Completed
+        </Header>
+        <Progress
+          size="medium"
+          active
+          indicating
+          progress
+          percent={this.props.play.percentageComplete}
+        />
+        <Divider />
+        {this.generateUIGrid()}
       </Container>
     );
   }

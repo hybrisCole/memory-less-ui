@@ -13,6 +13,7 @@
     "redux-thunk": "2.2.0",
     "semantic-ui-css": "2.2.10",
     "semantic-ui-react": "0.71.0",
+    "shortid": "2.2.8",
     "validator": "8.0.0"
   },
   "devDependencies": {
