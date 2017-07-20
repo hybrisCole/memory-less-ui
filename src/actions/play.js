@@ -1,6 +1,7 @@
 import { generateGrid } from "../util";
 export const START_GAME = "START_GAME";
 export const SELECT_NUMBER = "SELECT_NUMBER";
+export const UPDATE_TIME_ELAPSED = "UPDATE_TIME_ELAPSED";
 
 export const startGame = size => async dispatch => {
   const grid = generateGrid(size);

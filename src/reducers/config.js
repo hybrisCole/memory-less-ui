@@ -2,7 +2,7 @@ import { SET_GRID_SIZE, SET_TIME, SET_NAME } from "../actions/config";
 
 const initialState = {
   size: 4,
-  time: "30sec",
+  time: 30,
   name: ""
 };
 
