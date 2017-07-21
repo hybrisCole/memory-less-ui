@@ -25,7 +25,14 @@ const traverseNumbers = (grid, process) => {
 export default function reducer(state = initialState, { type, payload }) {
   switch (type) {
     case RESET_PLAY:
-      return initialState;
+      return {
+        grid: [],
+        selectedNumbers: [],
+        finished: false,
+        elapsedTime: 0,
+        gameFinished: false,
+        percentageComplete: 0
+      };
     case FINISH_GAME:
       return {
         ...state,
@@ -60,7 +67,12 @@ export default function reducer(state = initialState, { type, payload }) {
     case SELECT_NUMBER:
       const newState = { ...state };
       traverseNumbers(newState.grid, numberData => {
-        if (!numberData.found) {
+        if (
+          !numberData.found &&
+          !newState.finished &&
+          !newState.finished &&
+          !newState.gameFinished
+        ) {
           if (numberData.id === payload.id) {
             if (
               !_.includes(_.map(newState.selectedNumbers, "id"), numberData.id)

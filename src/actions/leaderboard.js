@@ -2,6 +2,7 @@ import axios from "axios";
 export const UPDATE_LEADERBOARD = "UPDATE_LEADERBOARD";
 export const RETRIEVE_LEADERBOARD = "RETRIEVE_LEADERBOARD";
 export const RETRIEVING_LEADERBOARD = "RETRIEVING_LEADERBOARD";
+export const RESET_LEADERBOARD = "RESET_LEADERBOARD";
 
 export const retrieveLeaderboard = () => async dispatch => {
   try {
@@ -26,6 +27,13 @@ export const retrieveLeaderboard = () => async dispatch => {
       }
     });
   } catch (err) {}
+};
+
+export const resetLeaderboard = () => dispatch => {
+  dispatch({
+    type: RESET_LEADERBOARD,
+    payload: {}
+  });
 };
 
 export const updateLeaderboard = ({

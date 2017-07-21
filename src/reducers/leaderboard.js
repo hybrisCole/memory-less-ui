@@ -1,7 +1,8 @@
 import {
   UPDATE_LEADERBOARD,
   RETRIEVE_LEADERBOARD,
-  RETRIEVING_LEADERBOARD
+  RETRIEVING_LEADERBOARD,
+  RESET_LEADERBOARD
 } from "../actions/leaderboard";
 
 const initialState = {
@@ -13,6 +14,13 @@ const initialState = {
 
 export default function reducer(state = initialState, { type, payload }) {
   switch (type) {
+    case RESET_LEADERBOARD:
+      return {
+        retrievingLeaderboard: false,
+        updatedLeaderboard: false,
+        leaderboardData: [],
+        scoreId: -1
+      };
     case RETRIEVING_LEADERBOARD:
       return {
         ...state,

@@ -9,6 +9,7 @@ export const RESET_PLAY = "RESET_PLAY";
 let timeElapsedIntervalId = -1;
 
 export const resetPlay = () => dispatch => {
+  clearInterval(timeElapsedIntervalId);
   dispatch({
     type: RESET_PLAY,
     payload: {}
