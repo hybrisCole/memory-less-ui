@@ -4,6 +4,8 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import {
   Button,
+  Dimmer,
+  Loader,
   Container,
   Grid,
   Header,
@@ -11,11 +13,14 @@ import {
   Progress
 } from "semantic-ui-react";
 import { selectNumber, freezeGame } from "../../actions/play";
+import { updateLeaderboard } from "../../actions/leaderboard";
+
 const mapStateToProps = state => state;
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(
     {
+      updateLeaderboard,
       selectNumber,
       freezeGame
     },
@@ -51,12 +56,32 @@ class Play extends Component {
     });
     return <Grid columns="equal">{rows}</Grid>;
   };
-  render() {
-    if (this.props.play.finished) {
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.play.finished && !nextProps.leaderboard.updatedLeaderboard) {
       this.props.actions.freezeGame();
     }
+    if (
+      nextProps.play.finished &&
+      !nextProps.play.gameFinished &&
+      !nextProps.leaderboard.updatedLeaderboard
+    ) {
+      this.props.actions.updateLeaderboard({
+        ...this.props.play,
+        ...this.props.config
+      });
+    }
+    if (nextProps.leaderboard.updatedLeaderboard) {
+      this.props.history.push("/leaderboard");
+    }
+  }
+  render() {
     return (
       <Container text>
+        <Dimmer active={this.props.play.gameFinished} page>
+          <Header as="h2" inverted>
+            <Loader size="massive">Updating Leaderboard</Loader>
+          </Header>
+        </Dimmer>
         <Header as="h1" textAlign="center" style={{ paddingTop: 15 }}>
           Memory Less
         </Header>

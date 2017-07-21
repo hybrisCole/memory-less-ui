@@ -3,10 +3,19 @@ export const START_GAME = "START_GAME";
 export const SELECT_NUMBER = "SELECT_NUMBER";
 export const UPDATE_TIME_ELAPSED = "UPDATE_TIME_ELAPSED";
 export const CLEAR_TIME_ELAPSED = "CLEAR_TIME_ELAPSED";
+export const FINISH_GAME = "FINISH_GAME";
+export const RESET_PLAY = "RESET_PLAY";
 
 let timeElapsedIntervalId = -1;
 
-export const startGame = (size, time) => async dispatch => {
+export const resetPlay = () => dispatch => {
+  dispatch({
+    type: RESET_PLAY,
+    payload: {}
+  });
+};
+
+export const startGame = (size, time) => dispatch => {
   const grid = generateGrid(size);
   dispatch({
     type: START_GAME,
@@ -22,7 +31,6 @@ export const startGame = (size, time) => async dispatch => {
     });
   }
   timeElapsedIntervalId = setInterval(() => {
-    console.log(UPDATE_TIME_ELAPSED);
     dispatch({
       type: UPDATE_TIME_ELAPSED,
       payload: {
@@ -35,12 +43,14 @@ export const startGame = (size, time) => async dispatch => {
 
 export const freezeGame = () => dispatch => {
   clearInterval(timeElapsedIntervalId);
-  dispatch({
-    type: 'FINISH',
-  });
+  setTimeout(() => {
+    dispatch({
+      type: FINISH_GAME
+    });
+  }, 750);
 };
 
-export const selectNumber = id => async dispatch => {
+export const selectNumber = id => dispatch => {
   dispatch({
     type: SELECT_NUMBER,
     payload: {

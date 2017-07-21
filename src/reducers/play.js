@@ -3,13 +3,16 @@ import {
   START_GAME,
   SELECT_NUMBER,
   UPDATE_TIME_ELAPSED,
-  CLEAR_TIME_ELAPSED
+  CLEAR_TIME_ELAPSED,
+  FINISH_GAME,
+  RESET_PLAY
 } from "../actions/play";
 const initialState = {
   grid: [],
   selectedNumbers: [],
   finished: false,
   elapsedTime: 0,
+  gameFinished: false,
   percentageComplete: 0
 };
 
@@ -21,6 +24,13 @@ const traverseNumbers = (grid, process) => {
 
 export default function reducer(state = initialState, { type, payload }) {
   switch (type) {
+    case RESET_PLAY:
+      return initialState;
+    case FINISH_GAME:
+      return {
+        ...state,
+        gameFinished: true
+      };
     case CLEAR_TIME_ELAPSED:
       return {
         ...state,
@@ -43,6 +53,8 @@ export default function reducer(state = initialState, { type, payload }) {
     case START_GAME:
       return {
         ...state,
+        finished: false,
+        gameFinished: false,
         grid: payload.grid
       };
     case SELECT_NUMBER:

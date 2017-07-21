@@ -70,18 +70,18 @@ class GameConfig extends Component {
           >
             6x6
           </Button>
-          <Button
-            primary={this.props.config.size === 8}
-            onClick={() => {
-              this.props.actions.setGridSize(8);
-            }}
-          >
-            8x8
-          </Button>
         </Button.Group>
         <Divider />
         <Header as="h2">Time</Header>
         <Button.Group size="large" fluid style={{ height: 70 }}>
+          <Button
+            primary={this.props.config.time === 30}
+            onClick={() => {
+              this.props.actions.setTime(30);
+            }}
+          >
+            30 sec
+          </Button>
           <Button
             primary={this.props.config.time === 60}
             onClick={() => {
@@ -89,14 +89,6 @@ class GameConfig extends Component {
             }}
           >
             1 min
-          </Button>
-          <Button
-            primary={this.props.config.time === 120}
-            onClick={() => {
-              this.props.actions.setTime(120);
-            }}
-          >
-            2 min
           </Button>
           <Button
             primary={this.props.config.time === 300}

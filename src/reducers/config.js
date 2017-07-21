@@ -1,4 +1,9 @@
-import { SET_GRID_SIZE, SET_TIME, SET_NAME } from "../actions/config";
+import {
+  SET_GRID_SIZE,
+  SET_TIME,
+  SET_NAME,
+  RESET_CONFIG
+} from "../actions/config";
 
 const initialState = {
   size: 4,
@@ -8,6 +13,8 @@ const initialState = {
 
 export default function reducer(state = initialState, { type, payload }) {
   switch (type) {
+    case RESET_CONFIG:
+      return initialState;
     case SET_NAME:
       return {
         ...state,
