@@ -1,9 +1,14 @@
 import _ from "lodash";
-import { START_GAME, SELECT_NUMBER } from "../actions/play";
+import {
+  START_GAME,
+  SELECT_NUMBER,
+  UPDATE_TIME_ELAPSED,
+  CLEAR_TIME_ELAPSED
+} from "../actions/play";
 const initialState = {
   grid: [],
   selectedNumbers: [],
-  totalTime: 30,
+  finished: false,
   elapsedTime: 0,
   percentageComplete: 0
 };
@@ -16,14 +21,32 @@ const traverseNumbers = (grid, process) => {
 
 export default function reducer(state = initialState, { type, payload }) {
   switch (type) {
+    case CLEAR_TIME_ELAPSED:
+      return {
+        ...state,
+        elapsedTime: 0,
+        finished: false
+      };
+    case UPDATE_TIME_ELAPSED:
+      const elapsedTime = state.elapsedTime + payload.add;
+      const newStateElapsed = elapsedTime === payload.time
+        ? {
+            ...state,
+            elapsedTime,
+            finished: true
+          }
+        : {
+            ...state,
+            elapsedTime
+          };
+      return newStateElapsed;
     case START_GAME:
-      console.log(payload.grid);
       return {
         ...state,
         grid: payload.grid
       };
     case SELECT_NUMBER:
-      const newState = _.clone(state);
+      const newState = { ...state };
       traverseNumbers(newState.grid, numberData => {
         if (!numberData.found) {
           if (numberData.id === payload.id) {
@@ -57,6 +80,9 @@ export default function reducer(state = initialState, { type, payload }) {
                   newState.percentageComplete = Math.floor(
                     foundNumbers * 100 / totalNumbers
                   );
+                  if (newState.percentageComplete === 100) {
+                    newState.finished = true;
+                  }
                 }
               });
             }
@@ -64,6 +90,12 @@ export default function reducer(state = initialState, { type, payload }) {
               traverseNumbers(newState.grid, numberDataExceed => {
                 newState.selectedNumbers = [];
                 numberDataExceed.selected = false;
+              });
+              traverseNumbers(newState.grid, numberDataExceed => {
+                if (numberDataExceed.id === payload.id) {
+                  numberDataExceed.selected = true;
+                  newState.selectedNumbers.push(numberDataExceed);
+                }
               });
             }
           }

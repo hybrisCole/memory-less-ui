@@ -10,13 +10,14 @@ import {
   Divider,
   Progress
 } from "semantic-ui-react";
-import { selectNumber } from "../../actions/play";
+import { selectNumber, freezeGame } from "../../actions/play";
 const mapStateToProps = state => state;
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(
     {
-      selectNumber
+      selectNumber,
+      freezeGame
     },
     dispatch
   )
@@ -51,13 +52,28 @@ class Play extends Component {
     return <Grid columns="equal">{rows}</Grid>;
   };
   render() {
+    if (this.props.play.finished) {
+      this.props.actions.freezeGame();
+    }
     return (
       <Container text>
         <Header as="h1" textAlign="center" style={{ paddingTop: 15 }}>
           Memory Less
         </Header>
         <Divider />
-        <Header as="h2" textAlign="center" style={{ paddingTop: 15 }}>
+        <Header as="h2" textAlign="center">
+          Time Elapsed
+        </Header>
+        <Progress
+          size="medium"
+          active
+          indicating
+          progress="ratio"
+          total={this.props.config.time}
+          value={this.props.play.elapsedTime}
+        />
+        <Divider />
+        <Header as="h2" textAlign="center">
           Completed
         </Header>
         <Progress

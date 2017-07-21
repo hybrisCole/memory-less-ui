@@ -24,7 +24,10 @@ class GameConfig extends Component {
     if (validator.isEmpty(this.props.config.name)) {
       alert("Enter a name");
     } else {
-      this.props.actions.startGame(this.props.config.size);
+      this.props.actions.startGame(
+        this.props.config.size,
+        this.props.config.time
+      );
       this.props.history.push("/play");
     }
   };
@@ -80,14 +83,6 @@ class GameConfig extends Component {
         <Header as="h2">Time</Header>
         <Button.Group size="large" fluid style={{ height: 70 }}>
           <Button
-            primary={this.props.config.time === 30}
-            onClick={() => {
-              this.props.actions.setTime(30);
-            }}
-          >
-            30 sec
-          </Button>
-          <Button
             primary={this.props.config.time === 60}
             onClick={() => {
               this.props.actions.setTime(60);
@@ -102,6 +97,14 @@ class GameConfig extends Component {
             }}
           >
             2 min
+          </Button>
+          <Button
+            primary={this.props.config.time === 300}
+            onClick={() => {
+              this.props.actions.setTime(300);
+            }}
+          >
+            5 min
           </Button>
         </Button.Group>
         <Divider />
